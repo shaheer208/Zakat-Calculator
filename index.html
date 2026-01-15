@@ -18,8 +18,7 @@
             background-color: #f3f4f6;
         }
         .input-group:focus-within label { color: #059669; }
-        .input-group:focus-within input, .input-group:focus-within select { border-color: #059669; ring: 2px; }
-        /* Custom scrollbar for the modal */
+        .input-group:focus-within input, .input-group:focus-within select { border-color: #059669; outline: none; ring: 2px; }
         #infoModalContent::-webkit-scrollbar { width: 6px; }
         #infoModalContent::-webkit-scrollbar-track { background: #f1f1f1; }
         #infoModalContent::-webkit-scrollbar-thumb { background: #059669; border-radius: 10px; }
@@ -253,7 +252,7 @@
                     <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 flex gap-3">
                         <i class="fa-solid fa-circle-info text-blue-600 mt-1"></i>
                         <div class="text-[11px] text-blue-800 leading-relaxed">
-                            <strong>Did you know?</strong> Zakat is calculated on your <em>Net Wealth</em> (Assets - Debt). It is only obligatory if this value stays above the Nisab for one lunar year.
+                            <strong>Calculation Info:</strong> Zakat is 2.5% of your Net Wealth. It is only due if your Net Wealth meets or exceeds the Nisab value (based on Silver).
                         </div>
                     </div>
                 </div>
@@ -274,13 +273,11 @@
             </div>
             
             <div id="infoModalContent" class="p-8 overflow-y-auto space-y-8 text-sm text-gray-700">
-                <!-- Section 1 -->
                 <section>
                     <h4 class="text-emerald-700 font-bold text-base border-b border-emerald-100 pb-2 mb-3">1. What is Zakat?</h4>
                     <p class="leading-relaxed">Zakat is one of the Five Pillars of Islam. It is a mandatory charitable contribution (2.5% of surplus wealth) intended to purify wealth and provide social security for the poor and needy.</p>
                 </section>
 
-                <!-- Section 2 -->
                 <section>
                     <h4 class="text-emerald-700 font-bold text-base border-b border-emerald-100 pb-2 mb-3">2. The Nisab (Threshold)</h4>
                     <p class="leading-relaxed mb-3">Zakat is only obligatory if your net wealth meets or exceeds the <strong>Nisab</strong>. There are two standards for Nisab:</p>
@@ -288,57 +285,22 @@
                         <li><strong>Gold Nisab:</strong> 7.5 Tola (approx. 87.48 grams) of 24K Gold.</li>
                         <li><strong>Silver Nisab:</strong> 52.5 Tola (approx. 612.36 grams) of Silver.</li>
                     </ul>
-                    <p class="mt-3 bg-gray-50 p-3 rounded italic">Note: Most scholars recommend using the <strong>Silver Nisab</strong> for modern cash-based calculations, as it allows more people to contribute to the welfare of the poor.</p>
+                    <p class="mt-3 bg-gray-50 p-3 rounded italic">Note: Most scholars recommend using the <strong>Silver Nisab</strong> for modern cash-based calculations.</p>
                 </section>
 
-                <!-- Section 3 -->
                 <section>
                     <h4 class="text-emerald-700 font-bold text-base border-b border-emerald-100 pb-2 mb-3">3. Karat & Purity System</h4>
-                    <p class="leading-relaxed">Jewelry is rarely pure 24K gold. To ensure fairness, this app uses a Karat correction factor:</p>
+                    <p class="leading-relaxed">Jewelry is rarely pure 24K gold. This app automatically adjusts weight based on Karat:</p>
                     <ul class="grid grid-cols-2 gap-2 mt-2 font-mono text-xs">
                         <li class="bg-gray-100 p-2 rounded">22K = 91.6% Pure</li>
                         <li class="bg-gray-100 p-2 rounded">21K = 87.5% Pure</li>
                         <li class="bg-gray-100 p-2 rounded">18K = 75.0% Pure</li>
                         <li class="bg-gray-100 p-2 rounded">14K = 58.3% Pure</li>
                     </ul>
-                    <p class="mt-2">If you have 10 Tola of 22K gold, the app calculates Zakat based on the value of 9.16 Tola of pure gold.</p>
-                </section>
-
-                <!-- Section 4 -->
-                <section>
-                    <h4 class="text-emerald-700 font-bold text-base border-b border-emerald-100 pb-2 mb-3">4. Zakatable vs. Non-Zakatable</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-emerald-50 p-3 rounded border border-emerald-100">
-                            <h5 class="font-bold text-emerald-800 text-xs uppercase mb-2">Calculate These:</h5>
-                            <ul class="list-check space-y-1 text-xs">
-                                <li>• Cash in hand or bank</li>
-                                <li>• Gold and Silver (Jewelry/Coins)</li>
-                                <li>• Stocks/Shares/Mutual Funds</li>
-                                <li>• Property bought for resale</li>
-                                <li>• Loans you are certain to get back</li>
-                            </ul>
-                        </div>
-                        <div class="bg-red-50 p-3 rounded border border-red-100">
-                            <h5 class="font-bold text-red-800 text-xs uppercase mb-2">Do Not Calculate:</h5>
-                            <ul class="list-check space-y-1 text-xs">
-                                <li>• Primary residence</li>
-                                <li>• Personal car / Tools of trade</li>
-                                <li>• Furniture / Clothing</li>
-                                <li>• Stones like Diamonds/Pearls</li>
-                                <li>• Property for rental income (only rent is zakatable)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Section 5 -->
-                <section>
-                    <h4 class="text-emerald-700 font-bold text-base border-b border-emerald-100 pb-2 mb-3">5. Deductions (Debts)</h4>
-                    <p class="leading-relaxed">You should subtract immediate debts (money you owe others) and upcoming business bills from your total. Do not subtract long-term mortgage/loan totals; only subtract the installments due right now or within the lunar year.</p>
                 </section>
 
                 <div class="text-center pt-4 border-t border-gray-100">
-                    <p class="text-[10px] text-gray-400">Disclaimer: This calculator is a tool to assist. For complex financial situations, please consult a qualified scholar.</p>
+                    <p class="text-[10px] text-gray-400">Disclaimer: For complex financial cases, please consult a scholar.</p>
                 </div>
             </div>
         </div>
@@ -346,7 +308,6 @@
 
     <script>
         const TOLA_GRAMS = 11.6638;
-        const KG_GRAMS = 1000;
         const NISAB_SILVER_TOLA = 52.5;
 
         function toggleModal(id) { 
@@ -364,10 +325,8 @@
             const unit = document.getElementById('weightUnit').value;
             let label = "per Tola";
             let short = "Tola";
-            
             if(unit === 'gram') { label = "per Gram"; short = "Grams"; }
             else if(unit === 'kg') { label = "per KG"; short = "KG"; }
-
             document.querySelectorAll('.unit-label').forEach(el => el.textContent = label);
             document.querySelectorAll('.unit-label-short').forEach(el => el.textContent = short);
             calculate();
@@ -381,6 +340,7 @@
             btn.disabled = true;
 
             try {
+                // Fetch Gold from Binance (PAXG is pegged to 1oz Gold)
                 const goldResp = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const goldData = await goldResp.json();
                 const priceUsdPerOz = parseFloat(goldData.price);
@@ -403,21 +363,19 @@
                 let finalGold, finalSilver;
                 if (unit === 'tola') {
                     finalGold = localPriceGram * TOLA_GRAMS;
-                    finalSilver = finalGold / 80;
                 } else if (unit === 'kg') {
-                    finalGold = localPriceGram * KG_GRAMS;
-                    finalSilver = finalGold / 80;
+                    finalGold = localPriceGram * 1000;
                 } else {
                     finalGold = localPriceGram;
-                    finalSilver = localPriceGram / 80;
                 }
+                finalSilver = finalGold / 80; // Rough silver estimate
 
                 document.getElementById('goldPrice').value = Math.round(finalGold);
                 document.getElementById('silverPrice').value = Math.round(finalSilver);
                 document.getElementById('lastUpdated').innerText = `Synced: ${new Date().toLocaleTimeString()}`;
                 document.getElementById('liveStatus').classList.remove('hidden');
             } catch (e) {
-                console.warn("Market fetch fallback triggered.");
+                console.error("Fetch failed", e);
             } finally {
                 btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Refresh';
                 btn.disabled = false;
@@ -426,7 +384,6 @@
         }
 
         function calculate() {
-            const unit = document.getElementById('weightUnit').value;
             const goldRate = parseFloat(document.getElementById('goldPrice').value) || 0;
             const silverRate = parseFloat(document.getElementById('silverPrice').value) || 0;
             const karatFactor = parseFloat(document.getElementById('goldKarat').value) || 1;
@@ -440,20 +397,11 @@
 
             const goldValue = gW * karatFactor * goldRate;
             const silverValue = sW * silverRate;
-            
             const totalAssets = goldValue + silverValue + cash + invest;
             const totalLiabilities = debts + exp;
             const netWealth = totalAssets - totalLiabilities;
             
-            let nisabValue;
-            if (unit === 'tola') {
-                nisabValue = NISAB_SILVER_TOLA * silverRate;
-            } else if (unit === 'kg') {
-                const gramsNisab = NISAB_SILVER_TOLA * TOLA_GRAMS;
-                nisabValue = (gramsNisab / 1000) * silverRate;
-            } else {
-                nisabValue = (NISAB_SILVER_TOLA * TOLA_GRAMS) * silverRate;
-            }
+            const nisabValue = NISAB_SILVER_TOLA * (document.getElementById('weightUnit').value === 'tola' ? silverRate : (silverRate * (TOLA_GRAMS / (document.getElementById('weightUnit').value === 'kg' ? 1000 : 1))));
 
             document.getElementById('netWealth').textContent = Math.max(0, Math.round(netWealth)).toLocaleString();
             document.getElementById('nisabValue').textContent = Math.round(nisabValue).toLocaleString();
@@ -462,8 +410,7 @@
             const banner = document.getElementById('statusBanner');
 
             if (netWealth >= nisabValue) {
-                const zakatVal = netWealth * 0.025;
-                zakatEl.textContent = Math.round(zakatVal).toLocaleString();
+                zakatEl.textContent = Math.round(netWealth * 0.025).toLocaleString();
                 banner.innerText = "Zakat is Obligatory";
                 banner.className = "bg-emerald-400 p-3 text-center text-[10px] font-black text-emerald-950 uppercase tracking-widest";
             } else {
