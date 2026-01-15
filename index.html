@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zakat Calculator Pro - PKR Edition</title>
+    <title>ZakatCL - Universal Zakat Calculator</title>
+    <meta name="description" content="Calculate your Zakat accurately with live global market rates for Gold and Silver. Supports Grams, Tola, Land, and Livestock.">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for Icons -->
@@ -16,31 +17,8 @@
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
         }
-        .input-group:focus-within label {
-            color: #059669;
-        }
-        .input-group:focus-within i {
-            color: #059669;
-        }
-        .input-group:focus-within input {
-            border-color: #059669;
-            ring: 2px;
-            ring-color: #059669;
-        }
-        
-        .modal-scroll::-webkit-scrollbar {
-            width: 8px;
-        }
-        .modal-scroll::-webkit-scrollbar-track {
-            background: #f1f1f1; 
-        }
-        .modal-scroll::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 4px;
-        }
-        .modal-scroll::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
-        }
+        .input-group:focus-within label { color: #059669; }
+        .input-group:focus-within input { border-color: #059669; ring: 2px; }
     </style>
 </head>
 <body class="text-gray-800 antialiased min-h-screen flex flex-col">
@@ -51,14 +29,14 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center space-x-3">
                     <i class="fa-solid fa-kaaba text-2xl text-emerald-400"></i>
-                    <span class="font-bold text-xl tracking-wide uppercase">Zakat<span class="font-light opacity-80">PK</span></span>
+                    <span class="font-bold text-xl tracking-wide uppercase">Zakat<span class="font-light opacity-80">CL</span></span>
                 </div>
                 <div class="flex items-center gap-4">
                     <div id="liveStatus" class="hidden md:flex items-center gap-2 text-[10px] bg-emerald-900/50 px-3 py-1 rounded-full border border-emerald-700">
                         <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-                        Live PKR Rates Active
+                        Live Market Rates Active
                     </div>
-                    <button onclick="toggleModal('infoModal')" class="p-2 rounded-full hover:bg-emerald-700 transition-colors" aria-label="Learn more">
+                    <button onclick="toggleModal('infoModal')" class="p-2 rounded-full hover:bg-emerald-700 transition-colors">
                         <i class="fa-regular fa-circle-question text-2xl"></i>
                     </button>
                 </div>
@@ -69,21 +47,27 @@
     <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 py-8 max-w-5xl">
         
+        <!-- Intro Section -->
+        <div class="mb-8 text-center">
+            <h1 class="text-2xl font-bold text-gray-800">Universal Zakat Calculator</h1>
+            <p class="text-gray-600 mt-2 max-w-2xl mx-auto">A professional tool to calculate your Zakat based on real-time market values for precious metals and various assets.</p>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
             <!-- Left Column: Inputs -->
             <div class="lg:col-span-7 space-y-6">
                 
-                <!-- Local Market Settings -->
+                <!-- Market Settings -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold text-gray-700"><i class="fa-solid fa-earth-asia mr-2 text-emerald-600"></i> Market Configuration</h2>
+                        <h2 class="text-lg font-semibold text-gray-700"><i class="fa-solid fa-earth-asia mr-2 text-emerald-600"></i> Local Market Rates</h2>
                         <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-1 rounded uppercase" id="lastUpdated">Initializing...</span>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Local Currency</label>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Currency</label>
                             <select id="currencySymbol" onchange="updateCurrencySymbol()" class="w-full bg-gray-50 border border-gray-300 text-gray-700 rounded-lg p-2.5 focus:ring-emerald-500 focus:border-emerald-500 font-medium">
                                 <option value="Rs" selected>PKR (Rs)</option>
                                 <option value="$">USD ($)</option>
@@ -95,72 +79,61 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Weight System</label>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Weight Unit</label>
                             <select id="weightUnit" onchange="updateWeightLabels()" class="w-full bg-gray-50 border border-gray-300 text-gray-700 rounded-lg p-2.5 focus:ring-emerald-500 focus:border-emerald-500 font-medium">
-                                <option value="tola" selected>Tola (Local)</option>
-                                <option value="gram">Grams (Standard)</option>
+                                <option value="tola" selected>Tola</option>
+                                <option value="gram">Grams</option>
                             </select>
                         </div>
                         <div class="flex items-end">
                             <button onclick="fetchMarketRates()" id="fetchBtn" class="w-full bg-emerald-600 text-white hover:bg-emerald-700 font-semibold rounded-lg p-2.5 transition-all flex items-center justify-center gap-2 shadow-sm">
-                                <i class="fa-solid fa-sync-alt"></i> Fetch Live Prices
+                                <i class="fa-solid fa-sync-alt"></i> Refresh Rates
                             </button>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div class="input-group">
-                            <label class="block text-sm font-medium text-gray-600 mb-1">Market Gold Price (<span class="unit-label">per Tola</span>)</label>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Gold Price (<span class="unit-label">per Tola</span>)</label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <span class="currency-display text-gray-400 font-bold">Rs</span>
                                 </div>
-                                <input type="number" id="goldPrice" value="215000" step="1" oninput="calculate()" class="pl-12 block w-full rounded-lg border-gray-300 bg-gray-50 border focus:bg-white focus:ring-emerald-500 focus:border-emerald-500 p-2.5 transition-all font-bold text-emerald-700">
+                                <input type="number" id="goldPrice" step="1" oninput="calculate()" class="pl-12 block w-full rounded-lg border-gray-300 bg-gray-50 border focus:bg-white focus:ring-emerald-500 focus:border-emerald-500 p-2.5 transition-all font-bold text-emerald-700">
                             </div>
                         </div>
 
                         <div class="input-group">
-                            <label class="block text-sm font-medium text-gray-600 mb-1">Market Silver Price (<span class="unit-label">per Tola</span>)</label>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Silver Price (<span class="unit-label">per Tola</span>)</label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <span class="currency-display text-gray-400 font-bold">Rs</span>
                                 </div>
-                                <input type="number" id="silverPrice" value="2500" step="1" oninput="calculate()" class="pl-12 block w-full rounded-lg border-gray-300 bg-gray-50 border focus:bg-white focus:ring-emerald-500 focus:border-emerald-500 p-2.5 transition-all font-bold text-emerald-700">
+                                <input type="number" id="silverPrice" step="1" oninput="calculate()" class="pl-12 block w-full rounded-lg border-gray-300 bg-gray-50 border focus:bg-white focus:ring-emerald-500 focus:border-emerald-500 p-2.5 transition-all font-bold text-emerald-700">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Main Assets -->
+                <!-- Primary Assets -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="bg-emerald-50/50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                        <h2 class="text-lg font-semibold text-gray-700"><i class="fa-solid fa-wallet mr-2 text-emerald-600"></i> Primary Assets</h2>
-                        <span class="text-[10px] text-gray-400 italic">Held for 1 Lunar Year</span>
+                    <div class="bg-emerald-50/50 px-6 py-4 border-b border-gray-100">
+                        <h2 class="text-lg font-semibold text-gray-700"><i class="fa-solid fa-wallet mr-2 text-emerald-600"></i> Cash & Metals</h2>
                     </div>
-
                     <div class="p-6 space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="input-group">
                                 <label class="block text-sm font-medium text-gray-600 mb-1">Gold Owned (<span class="unit-label-short">Tola</span>)</label>
                                 <input type="number" id="assetGold" placeholder="0" oninput="calculate()" class="block w-full rounded-lg border-gray-300 border p-2.5 focus:ring-emerald-500 focus:border-emerald-500 transition-all font-medium">
-                                <p class="text-[10px] text-gray-500 mt-1 flex justify-between">
-                                    <span>Market Value:</span>
-                                    <span class="font-bold text-emerald-600"><span class="currency-display">Rs</span><span id="valGold">0</span></span>
-                                </p>
                             </div>
                             <div class="input-group">
                                 <label class="block text-sm font-medium text-gray-600 mb-1">Silver Owned (<span class="unit-label-short">Tola</span>)</label>
                                 <input type="number" id="assetSilver" placeholder="0" oninput="calculate()" class="block w-full rounded-lg border-gray-300 border p-2.5 focus:ring-emerald-500 focus:border-emerald-500 transition-all font-medium">
-                                <p class="text-[10px] text-gray-500 mt-1 flex justify-between">
-                                    <span>Market Value:</span>
-                                    <span class="font-bold text-emerald-600"><span class="currency-display">Rs</span><span id="valSilver">0</span></span>
-                                </p>
                             </div>
                         </div>
-
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="input-group">
-                                <label class="block text-sm font-medium text-gray-600 mb-1">Cash (In Hand/Bank)</label>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Cash (Hand/Bank)</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                                         <span class="currency-display font-bold">Rs</span>
@@ -169,7 +142,7 @@
                                 </div>
                             </div>
                             <div class="input-group">
-                                <label class="block text-sm font-medium text-gray-600 mb-1">Investments/Shares</label>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Stock/Shares Value</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                                         <span class="currency-display font-bold">Rs</span>
@@ -181,32 +154,28 @@
                     </div>
                 </div>
 
-                <!-- Extra Assets (Land/Animals) -->
+                <!-- Business Assets -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                     <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
-                        <h2 class="text-lg font-semibold text-gray-700 flex items-center">
-                            <i class="fa-solid fa-layer-group mr-2 text-emerald-600"></i> Other Assets
-                        </h2>
+                        <h2 class="text-lg font-semibold text-gray-700"><i class="fa-solid fa-store mr-2 text-emerald-600"></i> Business & Trade Assets</h2>
                     </div>
-                    <div class="p-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="input-group">
-                                <label class="block text-sm font-medium text-gray-600 mb-1">Real Estate (for resale)</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 font-bold">
-                                        <span class="currency-display">Rs</span>
-                                    </div>
-                                    <input type="number" id="assetLand" placeholder="0" oninput="calculate()" class="pl-12 block w-full rounded-lg border-gray-300 border p-2.5 focus:ring-emerald-500 focus:border-emerald-500 transition-all">
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="input-group">
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Real Estate (for resale)</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 font-bold">
+                                    <span class="currency-display">Rs</span>
                                 </div>
+                                <input type="number" id="assetLand" placeholder="0" oninput="calculate()" class="pl-12 block w-full rounded-lg border-gray-300 border p-2.5 focus:ring-emerald-500 focus:border-emerald-500 transition-all">
                             </div>
-                            <div class="input-group">
-                                <label class="block text-sm font-medium text-gray-600 mb-1">Livestock (commercial)</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 font-bold">
-                                        <span class="currency-display">Rs</span>
-                                    </div>
-                                    <input type="number" id="assetAnimals" placeholder="0" oninput="calculate()" class="pl-12 block w-full rounded-lg border-gray-300 border p-2.5 focus:ring-emerald-500 focus:border-emerald-500 transition-all">
+                        </div>
+                        <div class="input-group">
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Commercial Livestock</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 font-bold">
+                                    <span class="currency-display">Rs</span>
                                 </div>
+                                <input type="number" id="assetAnimals" placeholder="0" oninput="calculate()" class="pl-12 block w-full rounded-lg border-gray-300 border p-2.5 focus:ring-emerald-500 focus:border-emerald-500 transition-all">
                             </div>
                         </div>
                     </div>
@@ -215,29 +184,25 @@
                 <!-- Liabilities -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                     <div class="bg-red-50/50 px-6 py-4 border-b border-red-100">
-                        <h2 class="text-lg font-semibold text-red-700 flex items-center">
-                            <i class="fa-solid fa-minus-circle mr-2"></i> Deduct Liabilities
-                        </h2>
+                        <h2 class="text-lg font-semibold text-red-700 flex items-center"><i class="fa-solid fa-minus-circle mr-2"></i> Deductions</h2>
                     </div>
-                    <div class="p-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="input-group">
-                                <label class="block text-sm font-medium text-gray-600 mb-1">Immediate Debts/Loans</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-red-300 font-bold">
-                                        <span class="currency-display">Rs</span>
-                                    </div>
-                                    <input type="number" id="liaDebts" placeholder="0" oninput="calculate()" class="pl-12 block w-full rounded-lg border-red-200 bg-red-50 focus:bg-white focus:ring-red-500 border p-2.5 transition-all">
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="input-group">
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Debts/Loans to Pay</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-red-300 font-bold">
+                                    <span class="currency-display">Rs</span>
                                 </div>
+                                <input type="number" id="liaDebts" placeholder="0" oninput="calculate()" class="pl-12 block w-full rounded-lg border-red-200 bg-red-50 focus:bg-white focus:ring-red-500 border p-2.5 transition-all">
                             </div>
-                            <div class="input-group">
-                                <label class="block text-sm font-medium text-gray-600 mb-1">Unpaid Bills/Expenses</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-red-300 font-bold">
-                                        <span class="currency-display">Rs</span>
-                                    </div>
-                                    <input type="number" id="liaExpenses" placeholder="0" oninput="calculate()" class="pl-12 block w-full rounded-lg border-red-200 bg-red-50 focus:bg-white focus:ring-red-500 border p-2.5 transition-all">
+                        </div>
+                        <div class="input-group">
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Unpaid Business Bills</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-red-300 font-bold">
+                                    <span class="currency-display">Rs</span>
                                 </div>
+                                <input type="number" id="liaExpenses" placeholder="0" oninput="calculate()" class="pl-12 block w-full rounded-lg border-red-200 bg-red-50 focus:bg-white focus:ring-red-500 border p-2.5 transition-all">
                             </div>
                         </div>
                     </div>
@@ -251,7 +216,7 @@
                     <!-- Result Card -->
                     <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-700 text-white rounded-2xl shadow-xl overflow-hidden relative border-t-4 border-emerald-400">
                         <div class="p-8 text-center relative z-10">
-                            <h3 class="text-emerald-200 text-xs uppercase tracking-[0.2em] font-bold mb-4">Final Zakat Amount</h3>
+                            <h3 class="text-emerald-200 text-xs uppercase tracking-[0.2em] font-bold mb-4">Total Zakat Payable</h3>
                             <div class="flex items-center justify-center gap-1">
                                 <span class="currency-display text-2xl font-light opacity-60">Rs</span>
                                 <span id="totalZakat" class="text-5xl font-black tracking-tight">0</span>
@@ -263,22 +228,20 @@
                                     <p class="font-bold text-lg"><span class="currency-display">Rs</span><span id="netWealth">0</span></p>
                                 </div>
                                 <div>
-                                    <p class="text-emerald-300 text-[10px] uppercase font-bold">Silver Nisab</p>
+                                    <p class="text-emerald-300 text-[10px] uppercase font-bold">Nisab (Silver)</p>
                                     <p class="font-bold text-lg"><span class="currency-display">Rs</span><span id="nisabValue">0</span></p>
                                 </div>
                             </div>
                         </div>
-                        
                         <div id="statusBanner" class="bg-emerald-950/40 p-3 text-center text-xs font-bold border-t border-white/5 uppercase tracking-wider">
-                            Calculating...
+                            Syncing Market Rates...
                         </div>
                     </div>
 
-                    <!-- Detailed Breakdown -->
+                    <!-- Breakdown -->
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h4 class="font-bold text-gray-700 mb-4 border-b pb-2 flex items-center justify-between">
-                            Summary
-                            <span class="text-[10px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Rate: 2.5%</span>
+                        <h4 class="font-bold text-gray-700 mb-4 border-b pb-2 flex justify-between items-center">
+                            Breakdown <span class="text-xs font-normal text-gray-400">Rate: 2.5%</span>
                         </h4>
                         <ul class="space-y-3 text-sm">
                             <li class="flex justify-between">
@@ -286,12 +249,12 @@
                                 <span class="font-bold text-gray-800"><span class="currency-display">Rs</span><span id="breakdownAssets">0</span></span>
                             </li>
                             <li class="flex justify-between">
-                                <span class="text-red-400">Total Deductions</span>
+                                <span class="text-red-400">Deductions</span>
                                 <span class="font-bold text-red-500">- <span class="currency-display">Rs</span><span id="breakdownLiabilities">0</span></span>
                             </li>
                             <hr class="border-gray-100">
                             <li class="flex justify-between items-center py-1">
-                                <span class="text-gray-900 font-bold uppercase text-xs">Zakatable Net</span>
+                                <span class="text-gray-900 font-bold uppercase text-[10px]">Zakatable Net</span>
                                 <span class="text-xl font-black text-emerald-700"><span class="currency-display">Rs</span><span id="breakdownNet">0</span></span>
                             </li>
                         </ul>
@@ -300,31 +263,42 @@
                     <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 flex gap-3">
                         <i class="fa-solid fa-circle-info text-emerald-600 mt-1"></i>
                         <p class="text-[11px] text-emerald-800 leading-relaxed">
-                            <strong>Note on Nisab:</strong> This calculator uses the <strong>Silver Standard (52.5 Tola / 612.36g)</strong> as it is more beneficial for the poor and widely recommended by local scholars.
+                            <strong>Nisab Rule:</strong> Zakat is calculated on wealth exceeding the Nisab threshold held for a full lunar year. Many scholars recommend the Silver standard (52.5 Tola / 612.36g) for broader benefit.
                         </p>
                     </div>
 
                     <button onclick="window.print()" class="w-full py-3 bg-gray-800 text-white rounded-xl hover:bg-black transition-all font-bold shadow-lg flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-file-pdf"></i> Download Report
+                        <i class="fa-solid fa-print"></i> Generate Report
                     </button>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Modal ... (Same as previous version) -->
+    <!-- Info Modal -->
     <div id="infoModal" class="fixed inset-0 z-50 hidden">
         <div class="fixed inset-0 bg-gray-950/80 backdrop-blur-sm" onclick="toggleModal('infoModal')"></div>
         <div class="fixed inset-0 z-10 flex items-center justify-center p-4">
             <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden">
                 <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-emerald-800 text-white">
-                    <h3 class="font-bold text-lg">Zakat Rules Summary</h3>
+                    <h3 class="font-bold text-lg">Zakat Guidelines</h3>
                     <button onclick="toggleModal('infoModal')"><i class="fa-solid fa-times"></i></button>
                 </div>
-                <div class="p-6 text-sm text-gray-600 space-y-4">
-                    <p><strong>Gold Nisab:</strong> 7.5 Tola (87.48g)</p>
-                    <p><strong>Silver Nisab:</strong> 52.5 Tola (612.36g)</p>
-                    <p><strong>Rate:</strong> 2.5% of total net wealth held for one lunar year.</p>
+                <div class="p-6 text-sm text-gray-600 space-y-4 max-h-[70vh] overflow-y-auto">
+                    <p><strong>Nisab:</strong> The minimum amount of wealth a Muslim must possess before Zakat becomes obligatory.</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>Gold:</strong> 7.5 Tola / 87.48g</li>
+                        <li><strong>Silver:</strong> 52.5 Tola / 612.36g</li>
+                    </ul>
+                    <p><strong>Asset Types:</strong></p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Cash in hand or bank.</li>
+                        <li>Gold & Silver (Jewelry, coins, or bars).</li>
+                        <li>Stocks, shares, and business merchandise.</li>
+                        <li>Real estate or assets intended for resale.</li>
+                        <li>Commercial livestock.</li>
+                    </ul>
+                    <p class="italic text-xs border-t pt-4">This tool is for calculation purposes. Please consult with a local scholar for specific rulings.</p>
                 </div>
             </div>
         </div>
@@ -334,78 +308,58 @@
         const TOLA_TO_GRAMS = 11.6638;
         const NISAB_SILVER_TOLA = 52.5;
 
-        function toggleModal(id) {
-            document.getElementById(id).classList.toggle('hidden');
-        }
+        function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
 
         function updateCurrencySymbol() {
             const sym = document.getElementById('currencySymbol').value;
             document.querySelectorAll('.currency-display').forEach(el => el.textContent = sym);
-            // Re-fetch prices if currency changes to get local rates
             fetchMarketRates();
         }
 
         function updateWeightLabels() {
             const unit = document.getElementById('weightUnit').value;
-            const text = unit === 'tola' ? 'per Tola' : 'per Gram';
-            const short = unit === 'tola' ? 'Tola' : 'Grams';
-            document.querySelectorAll('.unit-label').forEach(el => el.textContent = text);
-            document.querySelectorAll('.unit-label-short').forEach(el => el.textContent = short);
+            document.querySelectorAll('.unit-label').forEach(el => el.textContent = unit === 'tola' ? 'per Tola' : 'per Gram');
+            document.querySelectorAll('.unit-label-short').forEach(el => el.textContent = unit === 'tola' ? 'Tola' : 'Grams');
             calculate();
         }
 
-        // IMPROVED FETCHING LOGIC: Multi-source Price Fetching
         async function fetchMarketRates() {
             const btn = document.getElementById('fetchBtn');
             const currency = document.getElementById('currencySymbol').value;
             const unit = document.getElementById('weightUnit').value;
-            
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Syncing...';
             btn.disabled = true;
 
             try {
-                // 1. Fetch Global Gold Price (USD per Ounce)
-                // Using Binance as a reliable global price feed
+                // Fetch Global Gold (XAU) in USD
                 const goldResp = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const goldData = await goldResp.json();
                 const priceUsdPerOz = parseFloat(goldData.price);
 
-                // 2. Fetch Currency Conversion (USD to Local Currency)
-                // We use a public exchange rate API
-                let exchangeRate = 1;
-                if (currency === 'Rs') {
-                    // Specific logic for PKR
-                    const forexResp = await fetch('https://open.er-api.com/v6/latest/USD');
-                    const forexData = await forexResp.json();
-                    exchangeRate = forexData.rates.PKR || 280; // Fallback to 280 if API fails
-                } else if (currency !== '$') {
-                    const forexResp = await fetch('https://open.er-api.com/v6/latest/USD');
-                    const forexData = await forexResp.json();
-                    exchangeRate = forexData.rates[currency === 'Rs' ? 'PKR' : (currency === '₹' ? 'INR' : currency)] || 1;
-                }
-
-                // 3. Convert Troy Oz to Grams/Tola
-                const priceUsdPerGram = priceUsdPerOz / 31.1035;
-                const priceLocalPerGram = priceUsdPerGram * exchangeRate;
-                const priceLocalPerTola = priceLocalPerGram * TOLA_TO_GRAMS;
-
-                // 4. Update Inputs
-                const finalGold = (unit === 'tola') ? priceLocalPerTola : priceLocalPerGram;
-                document.getElementById('goldPrice').value = Math.round(finalGold);
+                // Fetch Exchange Rate
+                const forexResp = await fetch('https://open.er-api.com/v6/latest/USD');
+                const forexData = await forexResp.json();
                 
-                // Silver calculation (approx market ratio 1:85 - 1:90)
-                // Note: Silver prices are more volatile locally, but we derive it for consistency
-                const silverPrice = (finalGold / 88); 
-                document.getElementById('silverPrice').value = Math.round(silverPrice);
+                let rate = 1;
+                if (currency === 'Rs') rate = forexData.rates.PKR;
+                else if (currency === '₹') rate = forexData.rates.INR;
+                else if (currency === 'SR') rate = forexData.rates.SAR;
+                else if (currency === 'AED') rate = forexData.rates.AED;
+                else if (currency === '£') rate = forexData.rates.GBP;
+                else if (currency === '€') rate = forexData.rates.EUR;
 
-                document.getElementById('lastUpdated').innerText = `Live ${currency} Rates: ${new Date().toLocaleTimeString()}`;
+                const priceUsdPerGram = priceUsdPerOz / 31.1035;
+                const localPriceGram = priceUsdPerGram * rate;
+                const localPriceTola = localPriceGram * TOLA_TO_GRAMS;
+
+                const finalGold = (unit === 'tola') ? localPriceTola : localPriceGram;
+                document.getElementById('goldPrice').value = Math.round(finalGold);
+                document.getElementById('silverPrice').value = Math.round(finalGold / 85);
+
+                document.getElementById('lastUpdated').innerText = `Sync: ${new Date().toLocaleTimeString()}`;
                 document.getElementById('liveStatus').classList.remove('hidden');
-
-            } catch (err) {
-                console.error(err);
-                alert("Market connectivity issue. Please input current local market rates manually.");
+            } catch (e) {
+                console.error("API failed. Manual entry active.");
             } finally {
-                btn.innerHTML = '<i class="fa-solid fa-sync-alt"></i> Fetch Live Prices';
                 btn.disabled = false;
                 calculate();
             }
@@ -416,38 +370,21 @@
             const goldRate = parseFloat(document.getElementById('goldPrice').value) || 0;
             const silverRate = parseFloat(document.getElementById('silverPrice').value) || 0;
 
-            // Asset Weights
             const gW = parseFloat(document.getElementById('assetGold').value) || 0;
             const sW = parseFloat(document.getElementById('assetSilver').value) || 0;
-            
-            const valGold = gW * goldRate;
-            const valSilver = sW * silverRate;
-            
-            document.getElementById('valGold').textContent = Math.round(valGold).toLocaleString();
-            document.getElementById('valSilver').textContent = Math.round(valSilver).toLocaleString();
-
             const cash = parseFloat(document.getElementById('assetCash').value) || 0;
             const invest = parseFloat(document.getElementById('assetInvest').value) || 0;
             const land = parseFloat(document.getElementById('assetLand').value) || 0;
             const animals = parseFloat(document.getElementById('assetAnimals').value) || 0;
-            
-            const totalAssets = valGold + valSilver + cash + invest + land + animals;
-
             const debts = parseFloat(document.getElementById('liaDebts').value) || 0;
             const exp = parseFloat(document.getElementById('liaExpenses').value) || 0;
-            const totalLiabilities = debts + exp;
 
+            const totalAssets = (gW * goldRate) + (sW * silverRate) + cash + invest + land + animals;
+            const totalLiabilities = debts + exp;
             const netWealth = totalAssets - totalLiabilities;
             
-            // Calculate Nisab based on Silver (52.5 Tola)
-            let nisabThreshold;
-            if (unit === 'tola') {
-                nisabThreshold = NISAB_SILVER_TOLA * silverRate;
-            } else {
-                nisabThreshold = (NISAB_SILVER_TOLA * TOLA_TO_GRAMS) * silverRate;
-            }
+            const nisabThreshold = (unit === 'tola') ? (NISAB_SILVER_TOLA * silverRate) : (NISAB_SILVER_TOLA * TOLA_TO_GRAMS * silverRate);
 
-            // Results Update
             document.getElementById('netWealth').textContent = Math.max(0, Math.round(netWealth)).toLocaleString();
             document.getElementById('nisabValue').textContent = Math.round(nisabThreshold).toLocaleString();
             
@@ -455,26 +392,21 @@
             const banner = document.getElementById('statusBanner');
 
             if (netWealth >= nisabThreshold) {
-                const zakat = netWealth * 0.025;
-                zakatEl.textContent = Math.round(zakat).toLocaleString();
-                banner.innerText = "Zakat is Obligatory (Wajib)";
-                banner.className = "bg-emerald-400 p-3 text-center text-xs font-black border-t border-white/5 text-emerald-950 uppercase tracking-wider";
+                zakatEl.textContent = Math.round(netWealth * 0.025).toLocaleString();
+                banner.innerText = "Zakat is Wajib (Obligatory)";
+                banner.className = "bg-emerald-400 p-3 text-center text-xs font-black text-emerald-950 uppercase";
             } else {
                 zakatEl.textContent = "0";
                 banner.innerText = "Below Nisab Threshold";
-                banner.className = "bg-gray-700 p-3 text-center text-xs font-bold border-t border-white/5 text-gray-400 uppercase tracking-wider";
+                banner.className = "bg-gray-700 p-3 text-center text-xs font-bold text-gray-400 uppercase";
             }
 
-            // Breakdown
             document.getElementById('breakdownAssets').textContent = Math.round(totalAssets).toLocaleString();
             document.getElementById('breakdownLiabilities').textContent = Math.round(totalLiabilities).toLocaleString();
             document.getElementById('breakdownNet').textContent = Math.max(0, Math.round(netWealth)).toLocaleString();
         }
 
-        // Run on load
-        window.onload = () => {
-            fetchMarketRates();
-        };
+        window.onload = fetchMarketRates;
     </script>
 </body>
 </html>
